@@ -14,36 +14,36 @@ import javax.swing.SwingConstants;
 public class Calculator implements ActionListener {
 
     private boolean isClicked = false;
-    private boolean isPositive = true;
     private boolean isInitialized = false;
     private boolean isPointActive = false;
 
     private String isOperator;
     private String oldValue;
-    private  String newValue;
-    private float result;
+    private String newValue;
+    private String result;
 
-    private JFrame frame;
-    private JLabel display;
+    private final JFrame frame;
+    private final JLabel display;
 
-    private JButton zero;
-    private JButton one;
-    private JButton two;
-    private JButton three;
-    private JButton four;
-    private JButton five;
-    private JButton six;
-    private JButton seven;
-    private JButton eight;
-    private JButton nine;
-    private JButton plus;
-    private JButton minus;
-    private JButton multiply;
-    private JButton divide;
-    private JButton equal;
+    private final JButton zero;
+    private final JButton one;
+    private final JButton two;
+    private final  JButton three;
+    private final JButton four;
+    private final JButton five;
+    private final JButton six;
+    private final JButton seven;
+    private final JButton eight;
+    private final JButton nine;
+    private final JButton plus;
+    private final JButton minus;
+    private final JButton multiply;
+    private final JButton divide;
+    private final JButton equal;
+
     private JButton C;
-    private JButton point;
-    private JButton clear;
+    private final JButton point;
+    private final JButton clear;
 
     public Calculator( ) {
 
@@ -100,7 +100,7 @@ public class Calculator implements ActionListener {
 
         six = new JButton("6");
         six.setBounds(220, 240, 80, 80);
-        six.setFont(new Font("Arual", Font.PLAIN, 30));
+        six.setFont(new Font("Arial", Font.PLAIN, 30));
         six.setBackground(Color.white);
         six.addActionListener(this);
         frame.add(six);
@@ -230,7 +230,7 @@ public class Calculator implements ActionListener {
                 }
             }
         }else if(e.getSource() == four) {
-            if(display.getText()=="0") {
+            if(Objects.equals(display.getText(), "0")) {
                 display.setText("4");
             }else {
                 if(isClicked) {
@@ -320,7 +320,7 @@ public class Calculator implements ActionListener {
 
             newValue = display.getText();
 
-            result = Calculate(newValue);
+            result = calculate(newValue);
 
             display.setText(result+"");
 
@@ -331,7 +331,7 @@ public class Calculator implements ActionListener {
         }else if(e.getSource() == clear) {
             display.setText("0");
             isPointActive = false;
-            isPositive = true;
+
         } else if(e.getSource() == divide ) {
             if(isInitialized) {
                 if(isClicked) {
@@ -339,7 +339,7 @@ public class Calculator implements ActionListener {
                 }else {
                     newValue = display.getText();
 
-                    result=Calculate(newValue);
+                    result = calculate(newValue);
 
                     display.setText(result+"");
 
@@ -361,7 +361,7 @@ public class Calculator implements ActionListener {
                 }else {
                     newValue = display.getText();
 
-                    result=Calculate(newValue);
+                    result = calculate(newValue);
 
                     display.setText(result+"");
 
@@ -383,7 +383,7 @@ public class Calculator implements ActionListener {
                 }else {
                     newValue = display.getText();
 
-                    result=Calculate(newValue);
+                    result = calculate(newValue);
 
                     display.setText(result+"");
 
@@ -405,7 +405,7 @@ public class Calculator implements ActionListener {
                 }else {
                     newValue = display.getText();
 
-                    result=Calculate(newValue);
+                    result = calculate(newValue);
 
                     display.setText(result+"");
 
@@ -424,22 +424,37 @@ public class Calculator implements ActionListener {
 
     }
 
-    public float Calculate(String value) {
+    public String calculate(String value) {
 
         float firstValue = Float.parseFloat(oldValue);
         float secondValue = Float.parseFloat(value);
 
-        if (isOperator == "+") {
-                result = firstValue + secondValue;
-            } else if (isOperator == "-") {
-                result = firstValue - secondValue;
-            } else if (isOperator == "*") {
-                result = firstValue * secondValue;
-            } else if (isOperator == "/") {
-                result = firstValue / secondValue;
+        if (Objects.equals(isOperator, "+")) {
+            if ((firstValue + secondValue) % 1 == 0)
+                return Integer.toString((int) firstValue + (int) secondValue);
+            else
+                return Float.toString(firstValue + secondValue);
+        } else if (Objects.equals(isOperator, "-")) {
+            if ((firstValue - secondValue) % 1 == 0)
+                return Integer.toString((int) firstValue - (int) secondValue);
+            else
+                return Float.toString(firstValue - secondValue);
+        } else if (Objects.equals(isOperator, "*")) {
+            if ((firstValue * secondValue) % 1 == 0)
+                return Integer.toString((int) firstValue * (int) secondValue);
+            else
+                return Float.toString(firstValue * secondValue);
+        } else if (Objects.equals(isOperator, "/")) {
+            if (secondValue == 0) {
+                return "Division by zero!";
             }
-
-            return result;
+            if ((firstValue / secondValue) % 1 == 0)
+                return Integer.toString((int) firstValue / (int) secondValue);
+            else
+                return Float.toString(firstValue / secondValue);
+        } else {
+            return "Error!";
+        }
     }
 
 }
